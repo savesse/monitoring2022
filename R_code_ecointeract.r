@@ -52,7 +52,7 @@ zin<-meuse$zinc
 # then I can plot
 plot(cad,zin)
 
-# we can also use only dataframe: we can attach meuse (with @) to the table with attach() to directly use the names of coloumns
+# we can also use only dataframe: we can attach meuse to the table with attach() to directly use the names of coloumns
 
 attach(meuse)         # with this we attached the data frame: we can use the proper coloumn names
 
@@ -60,3 +60,32 @@ attach(meuse)         # with this we attached the data frame: we can use the pro
 # I want to see the relationships between all variables present we can use a function: pairs()
 
 pairs(meuse)
+
+# 17.10.2022
+# first we need to recall the library
+library(sp)
+# we are still going to use (meuse)
+data(meuse)
+# doing all operations seen before on graphs, cex, col, pairs
+
+# now we want to use the function pairs() but for subsets, not all the variables, we can use the interval; e.g. 3:6
+# we want cadmium, copper, lead and zinc, from coloumn 3 to 6
+# fro telling r the starting point of the selection we usse the comma; ,
+pairs(meuse[,3:6])
+# let's put together these under an object
+pol <- meuse[,3:6]
+# and now we can pairs pol
+pairs(pol)
+# if we want to pair only some variables without them being one next to the other or in general
+# here we will need the simbol ~ (alt+0126), we need something to take the variables together, the tilde
+pairs(~cadmium+copper+lead+zinc,data=meuse)
+pairs(~cadmium+copper+lead+zinc, data=meuse)
+pairs(~cadmium+copper+lead+zinc, data=meuse, col="darkgoldenrod2")
+pairs(~cadmium+copper+lead+zinc, data=meuse, col="darkgoldenrod2",pch=17,cex=3)
+
+
+
+
+
+
+
