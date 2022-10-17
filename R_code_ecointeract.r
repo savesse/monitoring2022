@@ -83,8 +83,31 @@ pairs(~cadmium+copper+lead+zinc, data=meuse)
 pairs(~cadmium+copper+lead+zinc, data=meuse, col="darkgoldenrod2")
 pairs(~cadmium+copper+lead+zinc, data=meuse, col="darkgoldenrod2",pch=17,cex=3)
 
+# we want to use correlations (Pearson correlation: if it's 1 there's perfect correlation, -1 is negative)
+panel.correlations
+# other panel is smoothing, histograms (with function hist())
+# then we can pairs() all the panels explainin where we want the panels (lower, upper, diagonal: the same of before with pairs() but with different fields)
+# we want to pass to a spatial vision of existing stuff, as spacial points
 
+# in the meuse dataset x and y are coordinates, so I can use them for having a spatial representation 
+# there's a function called coordinates, and we want to make r understanding that x and y are coordinates
+coordinates(meuse)=~x+y
+# then we can plot a spatial plot of meuse: all the points that have been measured -> meuse is a spatial dataset
+plot(meuse)
+# now we can plot every single variable in space: we use spplot (those who invented it decided to use "" for variables)
+# spplot (dataset, "variable", main(title of the plot)="")
+spplot(meuse, "zinc", main="Concentration of zinc")
+# we obtain a plot with values grouped on the base of the value, from the lower to the higher
+# in the plot thtere's that form bc on the left there is a river, wwe should look after the points near the river here in order for them to be low, bc of human presence there
+# we can also have a spatial plot of several terms
+spplot(meuse, c("copper","zinc"))
+# this creates an array of the two variables: plot with more than one variable
+# this can be confusing for the different scales of the different variables: see the 3 variables plot
 
+# another function is bubble(), with which we are going to change the size of the dimension of points in the plot
+bubble(meuse,"zinc")
+# this is higly understandable from the eye pov: everyone can have a fast idea of the meaning of it
+# everything here aimed to have a spatial view of the data
 
 
 
