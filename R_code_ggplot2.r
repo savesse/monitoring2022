@@ -53,6 +53,61 @@ ggplot(d, aes(x=virus, y=death)) + geom_polygon()
 # we can join various geometries together
 # for all geometries we can choose different colours, sizes, symbols
 
+# the function for collecting r with a folder on the laptop is setwd(), which mean set something working directly
+# setwd is set working directory: which woeking directory we are going to use (our data outside r)
+# for discovering the path we have to click on properties of the file
+
+setwd("C:/lab/")
+# or
+setwd("C:/lab")
+
+# now we want to get the data inside the folder
+# the funcion we r gonna use is read.table
+# the header can be false or true, but by default is false; in covid_agg we have a raw which is just the name of coloumns and not data
+# the header in our data is true
+# the separator (sep) is useful for separating coloumns 
+
+read.table("covid_agg.csv")
+
+# and we assgni it to the name covid
+
+covid <- read.table("covid_agg.csv")
+covid
+head(covid)
+
+# the software is not recognizing that the first raw has headers: r is considering it as data
+# instead of our headers r did put V1 V2 V3... we have to explain this to r
+
+covid <- read.table("covid_agg.csv", header=TRUE)
+covid <- read.table("covid_agg.csv", header=T)   #it's the same
+covid <- read.table("covid_agg.csv", head=T)      # the same
+head(covid)
+
+# from now on we will always use this working directory for this usage
+
+summary(covid)
+
+# ggplot functions used already before
+
+ggplot(covid, aes(x = lon, y = lat)) + geom_point()
+ggplot(covid, aes(x = lon, y = lat)) + geom_point(pch=3, col="darkred")
+
+# we can change the size of the points considering the cases since we have the variable 'cases'
+# the more cases the bigger the point will be on the graph
+
+ggplot(covid, aes(x = lon, y = lat, size = cases)) + geom_point()
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
