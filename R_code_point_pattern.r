@@ -11,7 +11,7 @@ read.table("covid_agg.csv", header=T)
 
 # so now we have our file inside R
 
-covid <- read.table("covid_agg.csv")
+covid <- read.table("covid_agg.csv", header=T)
 head(covid)
 
 # we already plotted everything in the previous lesson
@@ -29,7 +29,7 @@ library(spatstat)
 attach(covid)
 covid_planar <- ppp(lon, lat, c(-180,180), c(-90,90))
 
-# SEE ON VIRTUALE CODE
+# SEE ON VIRTUALE CODE also without attaching is possible to do it
 
 density_map <- density(covid_planar)
 
@@ -45,6 +45,69 @@ cl <- colorRampPalette(c('yellow','orange','red'))(100) #
 cl <- colorRampPalette(c('cyan','coral','chartreuse'))(100)
 plot (density_map, col=cl)
 points(covid_planar, pch=17, col="blue")
+
+# today we r gonna use also rgdal
+
+library(spatstat)
+library(rgdal)
+
+# rgdal is the version or gdal (geo spatial data library) of R
+# we are going to use ne_10m_coastline.zipFile data on virtuale
+# we then set our working directory in the lab folder
+
+setwd("C:/lab/")
+
+# we are going to upload the coastal lines and we put our name to it
+
+coastlines <- readOGR("ne_10m_coastline.shp")
+coastlines
+
+# the data are forming polygons
+# we want to rebiuld the map of yesterday
+
+covid <- read.table("covid_agg.csv", header=T)
+head(covid)
+attach(covid)
+covid_planar <- ppp(lon, lat, c(-180,180), c(-90,90))
+plot(covid_planar)
+
+# now we can add the coastlines to the previous plot
+# the other argument is add=T (T is true), always useful to add stuff to plots
+
+plot(covid_planar)
+plot(coastlines, add=T)
+
+# now we have the union of them and we want the map of yesterday
+
+density_map <- density(covid_planar)
+plot(density_map)
+points(covid_planar)
+cl <- colorRampPalette(c('bisque','azure','brown'))(100)
+plot(density_map, col=cl)
+
+head(covid)
+covid
+
+# we want to interpulate the number of cases 
+# we have point data and we want to have informations about where we didn't have data
+# in order to do this we can interpulate, and we explain which variable we want to process
+# we are marking the points with the number of cases 
+
+attach(covid)
+marks(covid_planar) <- cases
+cases_map <- Smooth(covid_planar)
+
+# warning bc of the number of points
+
+plot(cases_map, col=cl)
+plot(coastlines, add=T)
+
+# now we can understand this map including what we didn't know before
+
+
+
+
+
 
 
 
