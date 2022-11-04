@@ -64,10 +64,24 @@ ordiellipse(multivar, type, col=c("black","red","green","blue"), kind = "ehull",
 
 # so we see ellipses trying to connect the plots from the same biome together
 
+ordispider(multivar, type, col=c("black","red","green","blue"), label = T)
 
+# this connects all the points from the same biome to the same point
+# now we want to export our output with a pdf and putting it to the lab folder
+# the function is pdf(), the best way
 
+pdf("multivar.pdf")
 
+# now the pdf is empy and we have to fill it
 
+plot(multivar)
+ordiellipse(multivar, type, col=c("black","red","green","blue"), kind = "ehull", lwd=3)
+ordispider(multivar, type, col=c("black","red","green","blue"), label = T)
+
+# I did put what I want in the pdf
+# now I want to close the pdf: dev.off() and save it like that
+
+dev.off()
 
 
 
