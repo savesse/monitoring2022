@@ -7,7 +7,6 @@
 
 # we are going to use raster package
 library(raster)
-library(RStoolbox)
 
 # we set the working directory as always
 setwd("C:/lab/")
@@ -92,14 +91,14 @@ plot(p224r63_2011[[4]], col=cln)
 # there are different types of stretch and the simplest is Linear
 
 dev.off()
-plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin")
+plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="lin")
 
 # we now see the image in natural colors but here is difficult to discriminte between water and forests
 # the NIR is reflected a lot by plants (see slides) while R and B are adsorbed and the G reflected
 # if we can see the NIR we will see where the plants are since they reflect it a lot
 # we have to choose which band we should remove, we can have different trials
 
-plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="lin")
 
 # everything which will be reflecting a lot in the NIR will become red: everything red will be vegetation
 # now we can see kinda inside the forest, also plants and humidity and plants outside the forest
@@ -107,11 +106,11 @@ plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
 # apart from the forest we can see agricultural ares
 # we can still change colors (which are "mistakes" of our eyes
 
-plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="Lin")
+plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="lin")
 
 # now the NIR is seen as green, all the vegetation will become green
 
-plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="Lin")
+plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="lin")
 
 # now the NIR is seen as blue, all the vegetation will become blue
 # this is powerful for detecting areas without vegetation
@@ -121,10 +120,10 @@ plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="Lin")
 
 # plot the previous 4 manners in a single multiframe
 par(mfrow=c(2,2))
-plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin")
-plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
-plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="Lin")
-plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="Lin")
+plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="lin")
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="lin")
+plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="lin")
+plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="lin")
 
 # now we can see them all together
 # life has mainly some colors but we need the sensors to see them: our aeyes are anot a good sensor for that
@@ -141,7 +140,7 @@ plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="Lin")
 
 dev.off()
 par(mfrow=c(2,1))
-plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="lin")
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="hist")
 
 # we can compare the linear and the histogram: now stretching a lot (more or less exp) we can see even better inside the forest
@@ -149,10 +148,54 @@ plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="hist")
 # we can better see with a better stretch
 
 par(mfrow=c(2,1))
-plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="Lin")
+plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="lin")
 plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="hist")
 
 # we can then consider 2 different timetables: comparing two different moments in time
+# now we want to compare images from 2011 and 1988
+# we use brick() and we want to assign the name to an object
+
+p224r63_1988 <- brick("p224r63_1988_masked.grd")
+p224r63_2011 <- brick("p224r63_2011_masked.grd")
+p224r63_1988
+p224r63_2011
+
+# now we have the two images: it's the same portion of the planet but in two different times
+
+plotRGB(p224r63_1988, r=3, g=2, b=1, stretch="lin")
+# this is again in natural colors (violet are errors of the image)
+plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="lin")
+# again as before: vegetation red, the image is worse bc it's from 1988
+plotRGB(p224r63_1988, r=3, g=4, b=2, stretch="lin")
+# again as before; humans were going to make agriculture taking awway the forest
+
+# exercise: make a multiframe with 2 raws and 1 col plotting the 1988 and 2011 images
+par(mfrow=c(2,1))
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="lin")
+plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="lin")
+
+# there are visible differences in the two images about land use and presence of vegetation
+# now we can create a new image, which is the difference between the 2 images
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
