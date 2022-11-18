@@ -176,13 +176,51 @@ plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="lin")
 
 # there are visible differences in the two images about land use and presence of vegetation
 # now we can create a new image, which is the difference between the 2 images
+# we can compare some layers of the two images considering the same layer
+# we want to see how much vegetation was present in 1988 and how much is present in 2011
+# this is called multitemporal analysis
+# we want to use the NIR: NIR1988-NIR2011: if the value is positive that means that vegetation has decreased
+# the more positive is the value the more trees have been cut
+# the less is the difference the less is the change in time
+# we can explain the software also how to classify the resulting values (threshold for the cut)
+# we can do it pixel by pixel: 4'447'533 pixels in the NIR (band most reflected by vegetation)
 
+difnir <- p224r63_1988[[4]] - p224r63_2011[[4]]
+# difference in the NIR
 
+plot(difnir, col=clb)
+# all the greeen parts are places where there has been a cut on trees
+cl <- colorRampPalette(c('orange','yellow', 'black'))(100)
+plot(difnir, col=cl)
+# now all the black parts indicate loss of vegetation
+# in the middle of the forest the difference is quite small
+# black parts are all agricultural areas and a lot of areas are created by humans
 
+# we will focus also about DVI (difference vegetation index): red is adsorbed and NIR reflected
+# NIR-RED -> in a tree the valued will be high
+# if the plant is suffering the value of NIR will decrease (since the cells are collapsing) which instead of 1 can be 0.7
+# and the red will increase since the plant is not able to do photosynthesis and won't be able to adsorb the red
+# we calculte the DVI (first of 2011)
 
+dvi2011 <- p224r63_2011[[4]]-p224r63_2011[[3]]
+plot(dvi2011)
 
+# look at the grapho of DVI of vegetation and water
+# NIR is reflected a lot by vegetation and so little from water
 
+dvi1988 <- p224r63_1988[[4]]-p224r63_1988[[3]]
+plot(dvi1988)
 
+# in 1988 there is more green, so more vegetation
+# now we can make the difference between those 2, from 1988 to 2011
+
+cl <- colorRampPalette(c('blue','white', 'red'))(100)
+difdvi <- dvi1988 - dvi2011
+plot(difdvi, col=cl)
+
+# all the red parts mean that there has been loss in healthy vegetation
+# if there's blue means that the healthy vegeattion has increased (in some cases they plant, not natural)
+# other problem: make it seeable to blindcolor people
 
 
 
