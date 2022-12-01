@@ -45,5 +45,8 @@ ggplot() + geom_raster(snow_Europe, mapping = aes(x=x, y=y, fill=Snow.Cover.Exte
 # let's plot things together
 # plot the two sets with the patchwork() 
 
-
+p_tot <- ggplot() + geom_raster(snow, mapping = aes(x=x, y=y, fill=Snow.Cover.Extent)) + scale_fill_viridis(option="mako")
+p_EU <- ggplot() + geom_raster(snow_Europe, mapping = aes(x=x, y=y, fill=Snow.Cover.Extent)) + scale_fill_viridis(option="mako")
+p_tot + p_EU
+p_tot / p_EU
 
