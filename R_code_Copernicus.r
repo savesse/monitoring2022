@@ -22,16 +22,28 @@ snow
 # the layer inside the snow object is called Snow.Cover.Extent
 
 # Exercise based on plotting the snow cover with ggplot and viridis
+ggplot() + geom_raster(snow, mapping = aes(x=x, y=y, fill=Snow.Cover.Extent)) + scale_fill_viridis(option="brewer blues")
+# we have to put the layer Snow.Cover.Extent
+# as fill we should never use turbo, or rainbow colors
+# depending on the resolution we are using we might have lower or higher pixels
+# in copernicus website we also have the 500m resolution data (we used the 1km one), the resolution is better
 
+# in our image the upper part isn't rapresented because it doesn't have data available
+# if we want only the european data we can zoom and crop the image
+# one way is to draw a rectangle (extent): we should not use it, because we can't dra the same rectangle again
+# we should use the object ext and the minimum x and y and the maximum x and y
+# first the two x, then the two y
+# this is in order to have a new extent
 
+ext <- c(-20, 70, 20, 75)
+# then we can use crop() in order to cut the image
+snow_Europe <- crop(snow, ext)
+ggplot() + geom_raster(snow_Europe, mapping = aes(x=x, y=y, fill=Snow.Cover.Extent)) + scale_fill_viridis(option="brewer blues")
 
+# we have the data in december, we can download the data from the same period the year before to compare them
 
-
-
-
-
-
-
+# let's plot things together
+# plot the two sets with the patchwork() 
 
 
 
