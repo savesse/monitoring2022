@@ -59,6 +59,29 @@ plot(TGr)
 # when I want to recall only certain images of a set I should find or the same words in all the images
 # or I can write something more for every image I will need in the analysis
 
+ggplot() + geom_raster(TGr&lst2000, mapping = aes(x=x, y=y, fill=lst_2000)) + scale_fill_viridis(option="magma", direction=1, alpha=0.8) + ggtitle("Temperature")
+# is the same as
+p1 <- ggplot() + geom_raster(TGr[[1]], mapping = aes(x=x, y=y, fill=lst_2000)) + scale_fill_viridis(option="magma", direction=1, alpha=0.8) + ggtitle("Temperature 2000")
+p2 <- ggplot() + geom_raster(TGr[[4]], mapping = aes(x=x, y=y, fill=lst_2015)) + scale_fill_viridis(option="magma", direction=1, alpha=0.8) + ggtitle("Temperature 2015")
+
+# we can see the difference in the two images
+p1 <- ggplot() + geom_raster(TGr[[1]], mapping = aes(x=x, y=y, fill=lst_2000)) + scale_fill_viridis(option="magma", direction=-1, alpha=0.8) + ggtitle("Temperature 2000")
+p2 <- ggplot() + geom_raster(TGr[[4]], mapping = aes(x=x, y=y, fill=lst_2015)) + scale_fill_viridis(option="magma", direction=-1, alpha=0.8) + ggtitle("Temperature 2015")
+
+# with the reverse colors we can understand better the distribution and the density of the ice
+# the bright color in the middle of the ice changed a lot in the 15 years
+# we could also make the difference putting first 2015
+
+# 2015 - 2000
+dift = TGr[[4]] - TGr[[1]]
+p3 <- ggplot() + geom_raster(dift, mapping = aes(x=x, y=y, fill=layer)) + scale_fill_viridis(option="inferno", direction=-1, alpha=0.8) + ggtitle("Temperature Dif")
+p1 + p2 + p3
+
+plotRGB(TGr, r=1, g=2, b=4, stretch="lin")
+# in a single plot we are plotting three layers
+# the prevalent color will indicate us the layer with higher temperatures
+
+# there is also the colorist package
 
 
 
