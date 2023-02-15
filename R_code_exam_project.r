@@ -47,7 +47,9 @@ Export.image.toDrive({                          # we do it in the drive
   }
 });
 
-
+# Normalized Difference Snow Index (NDSI) is used to delineate the presence of snow/ice
+# It is a standardized ratio of the difference in the reflectance in the bands that take
+# advantage of unique signature and the spectral difference to indicate snow from the surrounding features and even clouds.
 # Once I got the GeoTIFF files I was able to download them and to visualize them in QGIS
 # Then I started my analysis in R
 
