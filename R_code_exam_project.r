@@ -20,7 +20,8 @@ coordinates: List (1 element)         # the list of the 4 groups of coordinates
 geodesic: false
 
 var dataset = ee.ImageCollection('MODIS/006/MOD10A1')                         # we are considering the images coming from MODIS, an instrument onboard a satellite
-                  .filter(ee.Filter.date('2020-01-01', '2020-12-31'));        # we set the time period in which we are intrested, so the single year
+                                                                              # Snow Cover Daily L3 Global 500m Grid
+                  .filter(ee.Filter.date('2000-03-01', '2000-03-31'));        # we set the time period in which we are intrested, so the single year
 var snowCover = dataset.select('NDSI_Snow_Cover');                            # as a variable we have the snowCover, which is considering the NDSI dataset
                                                                               # NDSI (normalized difference snow index), useful for the snow and ice
 var snowCoverVis = {
@@ -38,8 +39,8 @@ Map.addLayer(snowCover, snowCoverVis, 'Snow Cover');       # these are the layer
 // Export a cloud-optimized GeoTIFF.          # we also need to export this file as a GeoTIFF
 Export.image.toDrive({                          # we do it in the drive
   image: snowCover.select('NDSI_Snow_Cover').mean(),    # we want the mean of the year for what regards the snow cover
-  description: 'snowCover Mar 2020',          # this is the name given to the GeoTIFF
-  scale: 30,                              # this is the resolution of the scale
+  description: 'snow_cover_mar_2020',          # this is the name given to the GeoTIFF
+  scale: 250,                              # this is the resolution of the scale
   region: geometry,                     # this is the region which is going to be exported, so our geometry
   fileFormat: 'GeoTIFF',              # the format
   formatOptions: {
@@ -49,7 +50,9 @@ Export.image.toDrive({                          # we do it in the drive
 
 # Normalized Difference Snow Index (NDSI) is used to delineate the presence of snow/ice
 # It is a standardized ratio of the difference in the reflectance in the bands that take
-# advantage of unique signature and the spectral difference to indicate snow from the surrounding features and even clouds.
+# advantage of unique signature and the spectral difference to indicate snow from the surrounding features and even clouds
+# normalized difference between spectral bands green (G) and the shortwave infrared (SWIR)
+# The NDSI is particularly useful for separating snow from vegetation, soils, and lithology endmembers
 # Once I got the GeoTIFF files I was able to download them and to visualize them in QGIS
 # Then I started my analysis in R
 
@@ -62,19 +65,19 @@ library(raster)     # useful for importing raster
 library(ggplot2)    # useful for graphs
 library(RStoolbox)    # useful for graphs analysis
 library(viridis)      # useful fro graphic representations
+
 # I can start to import the first image to see if everything is working
 # In order to use this I can use the raster function
 # I can assign the result to an object through the <- operator
-snow_2000 <- raster("snow_cover_2000.tif")
+snow_2000 <- raster("snow_cover_mar_2000.tif")
 # now I can inspect the first image
 snow_2000
-# I can see all the followings features of the dataset
 # class      : RasterLayer 
-# dimensions : 6309, 7665, 48358485  (nrow, ncol, ncell)
-# resolution : 0.0002694946, 0.0002694946  (x, y)
-# extent     : 10.71537, 12.78105, 45.44972, 47.14996  (xmin, xmax, ymin, ymax)
+# dimensions : 1944, 4972, 9665568  (nrow, ncol, ncell)
+# resolution : 0.002245788, 0.002245788  (x, y)
+# extent     : 5.176542, 16.3426, 43.79062, 48.15644  (xmin, xmax, ymin, ymax)
 # crs        : +proj=longlat +datum=WGS84 +no_defs 
-# source     : snow_cover_2000.tif 
+# source     : snow_cover_mar_2000.tif 
 # names      : NDSI_Snow_Cover 
 
 # I can proceed with plotting the image through ggplot()
@@ -86,31 +89,31 @@ ggplot() + geom_raster(snow_2000, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover )
 # in light blue/azure there are the parts characterized by snow and ice
 # then I can experiment different colors
 ggplot() + geom_raster(snow_2000, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover )) + scale_fill_viridis()
-ggplot() + geom_raster(snow_2000, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover)) + scale_fill_viridis(option="magma")
+ggplot() + geom_raster(snow_2000, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover)) + scale_fill_viridis(option="mako")
 # I can also add a title
-ggplot() + geom_raster(snow_2000, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover)) + scale_fill_viridis(option="magma", direction=1) + ggtitle("Snow Cover")
+ggplot() + geom_raster(snow_2000, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover)) + scale_fill_viridis(option="mako", direction=1) + ggtitle("Snow Cover 2000")
 # and add the titles of the x and the y axis
-ggplot() + geom_raster(snow_2000, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover))+ scale_fill_viridis(option="magma", direction=1)+ ggtitle("Snow Cover 2000")+ xlab("Lat")+ ylab("Lon")
+ggplot() + geom_raster(snow_2000, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover))+ scale_fill_viridis(option="mako", direction=1)+ ggtitle("Snow Cover 2000")+ xlab("Lat")+ ylab("Lon")
 # now I should assign all the plot to an object, in order to recall it very fast
 p_2000 <-
-  ggplot() + geom_raster(snow_2000, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover))+ scale_fill_viridis(option="magma", direction=1)+ ggtitle("Snow Cover 2000")+ xlab("Lon")+ ylab("Lat")
+  ggplot() + geom_raster(snow_2000, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover))+ scale_fill_viridis(option="mako", direction=1)+ ggtitle("Snow Cover 2000")+ xlab("Lon")+ ylab("Lat")
 p_2000
 
 # now I can do this for every single image like it follows
 
-snow_2002 <- raster("snow_cover_2002.tif")
+snow_2002 <- raster("snow_cover_mar_2002.tif")
 snow_2002
 p_2002 <-
   ggplot() + geom_raster(snow_2002, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover))+ scale_fill_viridis(option="magma", direction=1)+ ggtitle("Snow Cover 2002")+ xlab("Lat")+ ylab("Lon")
 p_2002
 
-snow_2004 <- raster("snow_cover_2004.tif")
+snow_2004 <- raster("snow_cover_mar_2004.tif")
 snow_2004
 p_2004 <-
   ggplot() + geom_raster(snow_2004, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover))+ scale_fill_viridis(option="magma", direction=1)+ ggtitle("Snow Cover 2004")+ xlab("Lat")+ ylab("Lon")
 p_2004
 
-snow_2020 <- raster("snow_cover_2020.tif")
+snow_2020 <- raster("snow_cover_mar_2020.tif")
 snow_2020
 p_2020 <-
   ggplot() + geom_raster(snow_2020, mapping = aes(x=x, y=y, fill=NDSI_Snow_Cover))+ scale_fill_viridis(option="magma", direction=1)+ ggtitle("Snow Cover 2020")+ xlab("Lat")+ ylab("Lon")
@@ -129,8 +132,8 @@ d_16y
 
 # but since we have 12 images, we prefer to import all the images at the same time
 # we want to import all the images together so we don't waste time
-# first I named all the images in the same way: snow_coverage_year
-# we should use the lapply function, which is applying a function to a list or a vector
+# first I named all the images in the same way: snow_cover_mar_year
+# we should use the lapply() function, which is applying a function to a list or a vector
 # first we need to make the list of files including the world 'snow'
 
 rlist <- list.files(pattern="snow")
@@ -146,9 +149,61 @@ SCD <- stack(import)
 # SCD = Snow Coverage of Dolomites
 SCD
 plot(SCD)
-
+plot(SCD[[1]])
+plot(SCD[[2]])
+plot(SCD[[3]])
+plot(SCD[[4]])
+plot(SCD[[5]])
+plot(SCD[[6]])
+plot(SCD[[7]])
+plot(SCD[[8]])
+plot(SCD[[9]])
+plot(SCD[[10]])
+plot(SCD[[11]])
+plot(SCD[[12]])
 # when I want to recall only certain images of a set I should find or the same words in all the images
 # or I can write something more for every image I will need in the analysis
+
+# I try to divide the dataset in two subsets
+# the first one going from 2000 to 2010
+# the second done going from 2012 to 2022
+SCD_int_1 <- SCD[[1:6]]
+# I plot it in order to see if it worked
+plot(SCD_int_1)
+# I use the stackApply() functione to get the mean of the different raster
+SCDmean_1 <- stackApply(SCD_int_1, indices=1, fun=mean)
+plot(SCDsum_1)
+
+# I go on with the second subset
+SCD_int_2 <- SCD[[6:12]]
+SCDmean_2 <- stackApply(SCD_int_2, indices=1, fun=mean)
+plot(SCDsum_2)
+
+# I calculate the difference between the two means
+diff <- SCDsum_1 - SCDsum_2
+
+# I choose an appropriate color palette
+cl <- colorRampPalette(c("blue", "green", "lightgreen", "black", "yellow", "red", "darkred"))(100)
+# I can simply plot the difference 
+plot(diff, col=cl)
+diff_20 <- SCD[[1]] - SCD[[12]]
+plot(diff_20, col=cl)
+
+# I can plot the difference also using ggplot
+p_diff <-
+  ggplot() + geom_raster(diff, mapping = aes(x=x, y=y, fill=layer))+ scale_fill_viridis(option="mako", direction=1)+ ggtitle("Snow Cover Diff")+ xlab("Lat")+ ylab("Lon")
+p_diff
+
+diff_a <- SCDmean_1 - SCD[[12]]
+plot(diff_a, col=cl)
+
+diff_b <- SCDmean_1 - SCD[[11]]
+plot(diff_b, col=cl)
+
+diff_c <- SCDmean_1 - SCD[[10]]
+plot(diff_c, col=cl)
+
+plotRGB(SCD, r=3, g=5, b=11, stretch="lin")
 
 
 
