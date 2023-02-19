@@ -1,9 +1,9 @@
 # In this project I tried to study the evolution during time of snow cover firstly in the region between Trentino Altro Adige, Veneto and the border with Austria
-# which is nearer to my home and where I spent more time during my life
+# which is more near to my home and where I spent more time
 # Afterwards I thought it was better to consider the area of all the Alps in order to understand if there was a general trend
-# The period considered is between the year 2000 nd the year 2022
-# The snow present in this area can be collocated on the mountain groups of pre-Alps (more little mountains before the real Alps) and Alps present in that area
-# I chose this tpic nd area because I spent a lot of time on those mountains and I care pretty much about them
+# The period considered is between the year 2000 and the year 2022
+# The snow present in this area can be collocated on the mountain groups of pre-Alps (more little mountains before the real Alps) and Alps
+# I chose this topic and this area because I care pretty much about them
 # In order to get the images I used Google Earth Engine
 # Fisrt of all I had to build a code with the necessary parameters so I could get the images in which I was intrested in
 # Following now there will be the code used, obtained from the Google Earth Engine's guides, from some forums on the website and from my trials
