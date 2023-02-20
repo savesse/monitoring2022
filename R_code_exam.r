@@ -324,13 +324,13 @@ plot(diff_est, col=cl)
 # between the two subsets there is a visible difference
 # while the majority of the area is orange (=no difference)
 # the difference present is where the red is: that means that the first subset has an higher mean in the red parts
-# sp this means that in the first years the snow cover was higher than in the last years
+# so this means that in the first years the snow cover was higher than in the last years
 # summer snow cover has decreased over years
 # if I look accurately at the image and I confront it with a georeferenced satellite image
 # I can see that those red parts are on the top of very high mountains
 # In particular also the region of Mont Blanc is corresponding to a red area, as well as Mount Rosa region
-# the same goes for Ortler, Bolzano region, Grossglockner
-# So actually a lot of highest peaks and mountains in the Alps region is experimenting a decreasing in snow cover during summer
+# the same goes for Ortler, Bolzano region, Adamello, Grossglockner
+# So actually a lot of highest peaks and mountains in the Alps region are experimenting a decreasing in snow cover during summer
 # and this can be considered true in the range of only the last 22 years
 
 # I can plot the difference also using ggplot
@@ -371,11 +371,12 @@ p_diff_inv
 # I would have liked to use this formula but, at least on my laptop was not working
 # time <- 1:nlayers(SCD)
 # fun=function(x) { if (is.na(x[1])){ NA } else { m = lm(x ~ time); summary(m)$coefficients[2] }}
-# SCA_slope=calc(SCD, fun)
+# SCA_slope=calc(SCA, fun)
 # plot(SCA_slope)
 
 # now we want to see if there's a general trend summing together winter and summer
 # we use the stackApply function already seen before, for both the datsets
+# considering the two time subsets and putting together the two seasons
 SCA_sum_1 <- stackApply(SCA_est_1, indices=1, fun=mean) + stackApply(SCA_inv_1, indices=1, fun=mean)
 SCA_sum_2 <- stackApply(SCA_est_2, indices=1, fun=mean) + stackApply(SCA_inv_2, indices=1, fun=mean)
 
@@ -391,13 +392,13 @@ plot(SCA_tot_diff, col=cl)
 # but here the winter trend is accentuated by some more intense colored parts
 # but here we can also see a significant difference in all the low altitude parts of the mountains
 # all over italy on the south parts of Alps we can identify the orange: this means that the mean snow cover is decreasing
-# the majority of the decrease is in the arrea surrounding the Alps but also inside them, we can see that color
+# the majority of the decrease is in the area surrounding the Alps but also inside them, we can see that color
 # this means that also high mountains and peaks are affected by this phenomena (like we have seen in summer time)
 
 p_diff_tot <-
   ggplot() + geom_raster(SCA_tot_diff, mapping = aes(x=x, y=y, fill=layer))+ scale_fill_viridis(option="magma", direction=1)+ ggtitle("Snow Cover Total Diff")+ xlab("Lat")+ ylab("Lon")
 p_diff_tot
-# this is less useful to read the result
+# this is less useful in order to read the result
 
 # CONCLUSIONS
 # in all cases we can see a difference
@@ -406,6 +407,6 @@ p_diff_tot
 # also in the totality of the comparison the difference is present also if it's not exttremely high
 # snow cover so is decreasing on the Alps
 # we also have to think that this experiment was considering only 22 years and a trend was present
-# all the experiment started from my own observation of pre-Alps and Alps in Veneto, where I usually go a lot whenever I can
+# the idea of the experiment started from my own observation of pre-Alps and Alps in Veneto, where I usually go a lot whenever I can
 # I'm also taking a lot of photos in those trip and comparing photos throughout the years I noticed
-# this difference, which I was able to find here in this pattern
+# this difference, which I was able to explain here throughout this pattern
